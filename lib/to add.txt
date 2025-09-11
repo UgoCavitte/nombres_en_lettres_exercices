@@ -1,0 +1,2 @@
+# Enlever les doublons lors de la génération des nombres
+# Ajouter deux comptes : 1. Qui compte le nombre de nombres correctement orthographiés 2. À la suite
