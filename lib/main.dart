@@ -7,8 +7,10 @@ import 'package:nombres_apprendre_exercices/data/variables.dart';
 import 'package:nombres_apprendre_exercices/initialize_screen.dart';
 import 'package:nombres_apprendre_exercices/pages/chaine.dart';
 import 'package:nombres_apprendre_exercices/pages/consulter.dart';
+import 'package:nombres_apprendre_exercices/pages/devine_audio.dart';
 import 'package:nombres_apprendre_exercices/pages/exercices.dart';
 import 'package:nombres_apprendre_exercices/pages/explications.dart';
+import 'package:provider/provider.dart';
 import 'data/constantes.dart';
 import 'pages/parametres.dart';
 
@@ -95,7 +97,7 @@ class _MyAppState extends State<MyApp> {
       }
 
       return DefaultTabController(
-        length: 4,
+        length: 5,
         child: Scaffold(
           backgroundColor: couleurFondGeneral,
           appBar: AppBar(
@@ -124,6 +126,7 @@ class _MyAppState extends State<MyApp> {
             tabs: [
               Tab(icon: tabsIconConsulter, text: tabsNomConsulter),
               Tab(icon: tabsIconChaine, text: tabsNomChaine),
+              Tab(icon: Icon(Icons.play_arrow), text: "Bite"),
               Tab(icon: tabsIconExercices, text: tabsNomExercices),
               Tab(
                 icon: tabsIconExplications,
@@ -133,9 +136,17 @@ class _MyAppState extends State<MyApp> {
           ),
 
           // Contenu des onglets
-          body: const TabBarView(
+          body: TabBarView(
               physics: NeverScrollableScrollPhysics(),
-              children: [Consulter(), Chaine(), Exercices(), Explications()]),
+              children: [
+                Consulter(),
+                Chaine(),
+                ChangeNotifierProvider(
+                  create: (context) => ProviderDevineAudio(),
+                  child: DevineAudio(),
+                ),
+                Exercices(),
+                Explications()]),
         ),
       );
     }

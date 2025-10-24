@@ -21,6 +21,8 @@ dependencies:
 
   # IP
   ip_country_lookup: ^1.0.3
+  flutter_tts: ^4.2.3
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
