@@ -20,16 +20,16 @@ class _ParametresState extends State<Parametres> {
     List<Widget> toShow = [
       Padding(
         padding: paddingMarginGeneral,
-        child: ContainerTitre("Attention", textParametresEcrivezMoi),
+        child: ContainerTitre(title: "Attention", childWidget: textParametresEcrivezMoi),
       ),
       Padding(
         padding: paddingMarginGeneral,
-        child: ContainerTitre("Me contacter", textParametresContacts),
+        child: ContainerTitre(title: "Me contacter", childWidget: textParametresContacts),
       ),
       Padding(
         padding: paddingMarginGeneral,
         child: ContainerTitre(
-            stringMenuPrincipalConstantes, textMenuPrincipalConstantes),
+            title: stringMenuPrincipalConstantes, childWidget: textMenuPrincipalConstantes),
       )
     ];
 

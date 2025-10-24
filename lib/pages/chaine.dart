@@ -168,8 +168,8 @@ class _ChaineState extends State<Chaine> {
             Padding(
               padding: paddingMarginGeneral,
               child: ContainerTitre(
-                  stringRechercher,
-                  Column(
+                  title: stringRechercher,
+                  childWidget: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Nombre écrit en très gros
@@ -226,8 +226,8 @@ class _ChaineState extends State<Chaine> {
             Padding(
               padding: paddingMarginGeneral,
               child: ContainerTitre(
-                  chaineLabelTextField,
-                  Column(
+                  title: chaineLabelTextField,
+                  childWidget: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
@@ -277,8 +277,8 @@ class _ChaineState extends State<Chaine> {
             Padding(
               padding: paddingMarginGeneral,
               child: ContainerTitre(
-                stringParametresGeneraux,
-                Column(
+                title: stringParametresGeneraux,
+                childWidget: Column(
                   children: [
                     // Minimum
                     Padding(
@@ -322,8 +322,8 @@ class _ChaineState extends State<Chaine> {
                 Padding(
                     padding: paddingMarginGeneral,
                     child: ContainerTitre(
-                        titleReforme,
-                        Align(
+                        title: titleReforme,
+                        childWidget: Align(
                           alignment: Alignment.topLeft,
                           child: RadioGroup<bool?>(groupValue: reforme,
                       onChanged: (value) => _reformeClicked(value),
@@ -338,8 +338,8 @@ class _ChaineState extends State<Chaine> {
                 Padding(
                   padding: paddingMarginGeneral,
                   child: ContainerTitre(
-                      titleStandard,
-                      Align(
+                      title: titleStandard,
+                      childWidget: Align(
                         alignment: Alignment.topLeft,
                         child: RadioGroup<int?>(groupValue: standardSelectionne, onChanged: (value) => _standardClicked(value),
                           child: Column(

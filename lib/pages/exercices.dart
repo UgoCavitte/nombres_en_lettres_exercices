@@ -69,8 +69,8 @@ class _ExercicesState extends State<Exercices> {
       Padding(
           padding: paddingMarginGeneral,
           child: ContainerTitre(
-            stringParametresGeneraux,
-            Form(
+            title: stringParametresGeneraux,
+            childWidget: Form(
               key: _formKey,
               child: Column(
                 children: [
@@ -123,8 +123,8 @@ class _ExercicesState extends State<Exercices> {
           Padding(
               padding: paddingMarginGeneral,
               child: ContainerTitre(
-                  titleReforme,
-                  Align(
+                  title: titleReforme,
+                  childWidget: Align(
                     alignment: Alignment.topLeft,
                     child:
                       RadioGroup<bool?>(groupValue: reforme,
@@ -140,8 +140,8 @@ class _ExercicesState extends State<Exercices> {
           Padding(
             padding: paddingMarginGeneral,
             child: ContainerTitre(
-                titleStandard,
-                Align(
+                title: titleStandard,
+                childWidget: Align(
                   alignment: Alignment.topLeft,
                   child: RadioGroup<int?>(groupValue: standardSelectionne, onChanged: (value) => _standardClicked(value),
                           child: Column(

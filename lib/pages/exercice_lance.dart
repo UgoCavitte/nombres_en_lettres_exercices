@@ -197,8 +197,8 @@ class _ExerciceLanceState extends State<ExerciceLance> {
               Padding(
                 padding: paddingMarginGeneral,
                 child: ContainerTitre(
-                    "Résultat",
-                    Padding(
+                    title: "Résultat",
+                    childWidget: Padding(
                         padding: paddingMarginGeneral,
                         child: Align(
                             alignment: Alignment.center,
@@ -226,8 +226,8 @@ class _ExerciceLanceState extends State<ExerciceLance> {
       list.add(Padding(
           padding: paddingMarginGeneral,
           child: ContainerTitre(
-              (i + 1).toString(),
-              Column(
+              title: (i + 1).toString(),
+              childWidget: Column(
                 children: [
                   Padding(
                     padding: paddingMarginGeneral,

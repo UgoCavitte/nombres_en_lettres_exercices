@@ -5,7 +5,7 @@ class ContainerTitre extends InputDecorator {
   final Widget childWidget;
   final String title;
 
-  ContainerTitre(this.title, this.childWidget, {super.key})
+  ContainerTitre({required this.title, required this.childWidget, super.key})
       : super(
             decoration: InputDecoration(
                 enabledBorder: const OutlineInputBorder(

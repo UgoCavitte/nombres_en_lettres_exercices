@@ -211,8 +211,8 @@ class _ConsulterState extends State<Consulter> {
                   Padding(
                       padding: paddingMarginGeneral,
                       child: ContainerTitre(
-                          titleReforme,
-                          Align(
+                          title: titleReforme,
+                          childWidget: Align(
                             alignment: Alignment.topLeft,
                             child:
                             RadioGroup<bool?>(groupValue: reforme,
@@ -229,8 +229,8 @@ class _ConsulterState extends State<Consulter> {
                   Padding(
                     padding: paddingMarginGeneral,
                     child: ContainerTitre(
-                        titleStandard,
-                        Align(
+                        title: titleStandard,
+                        childWidget: Align(
                           alignment: Alignment.topLeft,
                           child:
 
