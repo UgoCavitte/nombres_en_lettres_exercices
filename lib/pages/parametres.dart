@@ -33,19 +33,18 @@ class _ParametresState extends State<Parametres> {
       )
     ];
 
-    if (countriesRequiringGDPR.contains(countryData.country_code)) {
-      toShow.add(Padding(
-        padding: paddingEntreBoutons,
-        child: BoutonElevated(
-            const Text("Changer les règles de confidentialité"), () {
-          dejaCharge = false;
-          ConsentInformation.instance.reset();
+    toShow.add(Padding(
+      padding: paddingEntreBoutons,
+      child: BoutonElevated(
+          const Text("Changer les règles de confidentialité"), () {
+        dejaCharge = false;
+        ConsentInformation.instance.reset();
 
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const MyApp()));
-        }),
-      ));
-    }
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const MyApp()));
+      }),
+    ));
+    
 
     return Scaffold(
       appBar: AppBar(

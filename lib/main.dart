@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:ip_country_lookup/ip_country_lookup.dart';
 import 'package:flutter/material.dart';
 import 'package:nombres_apprendre_exercices/data/variables.dart';
 import 'package:nombres_apprendre_exercices/initialize_screen.dart';
@@ -35,120 +32,71 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    // Vérifier si l'utilisateur a internet
 
-    try {
-      InternetAddress.lookup("example.com").then((v) {
-        if (!(v.isNotEmpty && v[0].rawAddress.isNotEmpty)) {
-          // En l'absence de connexion, on place l'utilisateur en AFS
-          isCountryLoaded = true;
-          countryData.country_code = "ZA";
-        }
-      });
-    } on SocketException catch (_) {
-      //
-    }
-
-    // Localiser l'utilisateur
-    if (!isCountryLoaded) {
-      IpCountryLookup().getIpLocationData().then((country) {
-        setState(() {
-          countryData = country;
-          isCountryLoaded = true;
-        });
-      });
-      return const Scaffold(
-          backgroundColor: couleurFondGeneral,
-          body: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: paddingMarginGeneral,
-                child: Text(
-                  "Vérification du pays...",
-                  style: textStyleNormal,
-                ),
-              ),
-              Padding(
-                padding: paddingMarginGeneral,
-                child: CircularProgressIndicator(
-                  color: Colors.black,
-                ),
-              )
-            ],
-          )));
-    }
-
-    // Si le code du pays a déjà été chargé
-    else {
-      // L'utilisateur n'a pas encore consenti ?
-
-      if (!dejaCharge &&
-          countriesRequiringGDPR.contains(countryData.country_code)) {
-        return const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: InitializeScreen(targetWidget: MyApp()),
-        );
-      } else {
-        WidgetsFlutterBinding.ensureInitialized();
-        MobileAds.instance.initialize();
-      }
-
-      return DefaultTabController(
-        length: 5,
-        child: Scaffold(
-          backgroundColor: couleurFondGeneral,
-          appBar: AppBar(
-            title: appBarTitre,
-            backgroundColor: appBarCouleurFond,
-            foregroundColor: appBarCouleurText,
-            centerTitle: true,
-            actions: [
-              IconButton(
-                icon: iconeParametres,
-                tooltip: "Paramètres",
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Parametres()));
-                },
-              )
-            ],
-          ),
-
-          // Tous les trucs qui sont en bas
-          bottomNavigationBar: const TabBar(
-            labelColor: Color(0xff00049f),
-            indicatorColor: Color(0xffef3131),
-            tabs: [
-              Tab(icon: tabsIconConsulter, text: tabsNomConsulter),
-              Tab(icon: tabsIconChaine, text: tabsNomChaine),
-              Tab(icon: Icon(Icons.play_arrow), text: "Bite"),
-              Tab(icon: tabsIconExercices, text: tabsNomExercices),
-              Tab(
-                icon: tabsIconExplications,
-                text: tabsNomExplications,
-              )
-            ],
-          ),
-
-          // Contenu des onglets
-          body: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                Consulter(),
-                Chaine(),
-                ChangeNotifierProvider(
-                  create: (context) => ProviderDevineAudio(),
-                  child: DevineAudio(),
-                ),
-                Exercices(),
-                Explications()]),
-        ),
+    // L'utilisateur n'a pas encore consenti ?
+    if (!dejaCharge) {
+      return const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: InitializeScreen(targetWidget: MyApp()),
       );
+    } else {
+      WidgetsFlutterBinding.ensureInitialized();
+      MobileAds.instance.initialize();
     }
+
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        backgroundColor: couleurFondGeneral,
+        appBar: AppBar(
+          title: appBarTitre,
+          backgroundColor: appBarCouleurFond,
+          foregroundColor: appBarCouleurText,
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: iconeParametres,
+              tooltip: "Paramètres",
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Parametres()));
+              },
+            )
+          ],
+        ),
+
+        // Tous les trucs qui sont en bas
+        bottomNavigationBar: const TabBar(
+          labelColor: Color(0xff00049f),
+          indicatorColor: Color(0xffef3131),
+          tabs: [
+            Tab(icon: tabsIconConsulter, text: tabsNomConsulter),
+            Tab(icon: tabsIconChaine, text: tabsNomChaine),
+            Tab(icon: Icon(Icons.play_arrow), text: "Bite"),
+            Tab(icon: tabsIconExercices, text: tabsNomExercices),
+            Tab(
+              icon: tabsIconExplications,
+              text: tabsNomExplications,
+            )
+          ],
+        ),
+
+        // Contenu des onglets
+        body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              Consulter(),
+              Chaine(),
+              ChangeNotifierProvider(
+                create: (context) => ProviderDevineAudio(),
+                child: DevineAudio(),
+              ),
+              Exercices(),
+              Explications()]),
+      ),
+    );
+    
   }
 }

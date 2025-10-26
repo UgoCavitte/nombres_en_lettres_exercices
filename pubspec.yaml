@@ -19,8 +19,6 @@ dependencies:
   sqflite: ^2.3.0
   path_provider: ^2.0.15
 
-  # IP
-  ip_country_lookup: ^1.0.3
   flutter_tts: ^4.2.3
   provider: ^6.1.5+1
 
