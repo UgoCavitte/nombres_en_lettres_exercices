@@ -27,6 +27,7 @@ class DevineAudio extends StatelessWidget {
             children: [
               _getAudioPlayer(provider),
               _getMainSettings(provider),
+              _getAudioSettings(provider),
               // _getAdditionalSettings()
             ],
           ),
@@ -86,6 +87,24 @@ class DevineAudio extends StatelessWidget {
             );
   }
 
+  Widget _getAudioSettings (ProviderDevineAudio provider) {
+    return Padding(
+      padding: paddingMarginGeneral,
+      child: ContainerTitre(title: "Audio",
+          childWidget: Column(
+            children: [
+              // Volume setter
+              const Text("Volume", style: textStyleNormal,),
+              Padding(padding: paddingMarginGeneral, child: Slider(value: provider.volume, activeColor: couleurTexteGeneral, onChanged: (v) => provider.setVolume(v)),),
+
+              // Speed setter
+              const Text("Vitesse", style: textStyleNormal,),
+              Padding(padding: paddingMarginGeneral, child: Slider(value: provider.speedRate, activeColor: couleurTexteGeneral, onChanged: (v) => provider.setSpeechRate(v)),)
+            ],
+          )),
+    );
+  }
+
   Widget _getAdditionalSettings () {
     return Text("Will be done later");
   }
@@ -96,6 +115,9 @@ class ProviderDevineAudio with ChangeNotifier {
 
   late int currentNumber;
   Random random = Random();
+
+  double volume = 1.0;
+  double speedRate = 0.5;
 
   int min = nombreMin.round();
   int max = 99;
@@ -110,8 +132,8 @@ class ProviderDevineAudio with ChangeNotifier {
 
   void initialize () async {
     await flutterTts.setLanguage("fr-FR");
-    await flutterTts.setSpeechRate(0.5);
-    await flutterTts.setVolume(1.0);
+    await flutterTts.setSpeechRate(speedRate);
+    await flutterTts.setVolume(volume);
     await flutterTts.setPitch(1.0);
 
     regenerate();
@@ -142,6 +164,18 @@ class ProviderDevineAudio with ChangeNotifier {
 
   void showAnswer () {
     labelAnswer = RichText(text: TextSpan(text: "La bonne réponse était : $currentNumber", style: TextStyle(color: couleurTexteGeneral)));
+    notifyListeners();
+  }
+
+    void setVolume (double v) async {
+    volume = v;
+    await flutterTts.setVolume(volume);
+    notifyListeners();
+  }
+
+  void setSpeechRate (double v) async {
+    speedRate = v;
+    await flutterTts.setSpeechRate(v);
     notifyListeners();
   }
 
