@@ -1,5 +1,5 @@
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:nombres_apprendre_exercices/data/variables.dart';
 import 'package:nombres_apprendre_exercices/initialize_screen.dart';
 import 'package:nombres_apprendre_exercices/pages/chaine.dart';
@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
           tabs: [
             Tab(icon: tabsIconConsulter, text: tabsNomConsulter),
             Tab(icon: tabsIconChaine, text: tabsNomChaine),
-            Tab(icon: Icon(Icons.play_arrow), text: "Bite"),
+            Tab(icon: Icon(Icons.play_arrow), text: tabsNomAudio),
             Tab(icon: tabsIconExercices, text: tabsNomExercices),
             Tab(
               icon: tabsIconExplications,
