@@ -87,6 +87,7 @@ const Icon iconeParametres = Icon(Icons.settings);
 // Tabs et BottomNavigationBar
 const String tabsNomConsulter = "Chercher";
 const String tabsNomChaine = "Enchaîner";
+const String tabsNomAudio = "Audio";
 const String tabsNomExercices = "Listes";
 const String tabsNomExplications = "Règles";
 

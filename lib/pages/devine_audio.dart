@@ -21,18 +21,16 @@ class DevineAudio extends StatelessWidget {
 
     return ListView(
       children: [
-        Padding(
-          padding: paddingMarginGeneral,
-          child: Column(
+        Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _getAudioPlayer(provider),
               _getMainSettings(provider),
-              _getAdditionalSettings()
+              // _getAdditionalSettings()
             ],
           ),
-        )
+        
       ],
     );
   }
@@ -42,11 +40,11 @@ class DevineAudio extends StatelessWidget {
     return Padding(padding: paddingMarginGeneral, child: ContainerTitre(title: "Deviner", childWidget:
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          IconButton(onPressed: provider.playSound, icon: Icon(Icons.play_arrow_rounded)),
+          CircleAvatar(radius: 30, backgroundColor: couleurTexteGeneral, child: IconButton(onPressed: provider.playSound, icon: Icon(Icons.play_arrow, color: Colors.white,))),
           TextField(controller: provider.controller, keyboardType: TextInputType.number,),
-          Text(provider.labelAnswer),
+          Padding(padding: paddingMarginGeneral, child: provider.labelAnswer,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,7 +106,7 @@ class ProviderDevineAudio with ChangeNotifier {
   TextEditingController controller = TextEditingController();
   TextEditingController controllerMin = TextEditingController(text: nombreMin.round().toString());
   TextEditingController controllerMax = TextEditingController(text: "99");
-  String labelAnswer = "";
+  RichText labelAnswer = RichText(text: TextSpan(text: ""));
 
   void initialize () async {
     await flutterTts.setLanguage("fr-FR");
@@ -117,6 +115,8 @@ class ProviderDevineAudio with ChangeNotifier {
     await flutterTts.setPitch(1.0);
 
     regenerate();
+
+    initialized = true;
   }
 
   void playSound () async {
@@ -124,11 +124,25 @@ class ProviderDevineAudio with ChangeNotifier {
   }
 
   void checkAnswer () {
-    //
+    int givenAnswer = int.parse(controller.text);
+
+    // Bonne réponse
+    if (givenAnswer == currentNumber) {
+      labelAnswer = RichText(text: TextSpan(text: "Bonne réponse !", style: TextStyle(color: Colors.green)));
+      controller.text = "";
+      regenerate();
+    }
+
+    else {
+      labelAnswer = RichText(text: TextSpan(text: "Mauvaise réponse !", style: TextStyle(color: Colors.red)));
+    }
+
+    notifyListeners();
   }
 
   void showAnswer () {
-    //
+    labelAnswer = RichText(text: TextSpan(text: "La bonne réponse était : $currentNumber", style: TextStyle(color: couleurTexteGeneral)));
+    notifyListeners();
   }
 
   void regenerate () {
