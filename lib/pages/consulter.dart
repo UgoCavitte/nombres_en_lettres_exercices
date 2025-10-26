@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:nombres_apprendre_exercices/banner_ad_stateful.dart';
 import 'package:nombres_apprendre_exercices/data/constantes.dart';
 import 'package:nombres_apprendre_exercices/data/map_nombres.dart';
 import 'package:nombres_apprendre_exercices/types/bouton_elevated.dart';
@@ -248,7 +249,11 @@ class _ConsulterState extends State<Consulter> {
                         )),
                   ),
                 ],
-              )
+              ),
+
+              BannerAdStateful()
+            
+            
             ],
           ))
     ]);

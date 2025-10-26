@@ -2,10 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:nombres_apprendre_exercices/banner_ad_stateful.dart';
 import 'package:nombres_apprendre_exercices/data/constantes.dart';
 import 'package:nombres_apprendre_exercices/types/bouton_elevated.dart';
 import 'package:nombres_apprendre_exercices/types/container_titre.dart';
 import 'package:provider/provider.dart';
+
+const adID = 'ca-app-pub-2601867806541576/2421040008';
+
 
 class DevineAudio extends StatelessWidget {
   const DevineAudio({super.key});
@@ -19,13 +24,22 @@ class DevineAudio extends StatelessWidget {
       provider.initialize();
     }
 
+    if (provider.attempts % 8 == 0) {
+      if (provider.interstitialAd != null) {
+        provider.interstitialAd?.show();
+        provider.adLoaded = false;
+      }
+      provider.loadAd();
+    }
+
     return ListView(
       children: [
         Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _getAudioPlayer(provider),
+              BannerAdStateful(),
               _getMainSettings(provider),
               _getAudioSettings(provider),
               // _getAdditionalSettings()
@@ -113,6 +127,10 @@ class DevineAudio extends StatelessWidget {
 
 class ProviderDevineAudio with ChangeNotifier {
 
+  int attempts = 0;
+  InterstitialAd? interstitialAd;
+  bool adLoaded = false;
+
   late int currentNumber;
   Random random = Random();
 
@@ -146,6 +164,8 @@ class ProviderDevineAudio with ChangeNotifier {
   }
 
   void checkAnswer () {
+    attempts++;
+
     int givenAnswer = int.parse(controller.text);
 
     // Bonne réponse
@@ -183,6 +203,38 @@ class ProviderDevineAudio with ChangeNotifier {
     min = int.parse(controllerMin.text);
     max = int.parse(controllerMax.text);
     currentNumber = random.nextInt(max - min) + min;
+  }
+
+  void loadAd() {
+    adLoaded = false;
+    InterstitialAd.load(
+        adUnitId: adID,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+              // Called when the ad showed the full screen content.
+              onAdShowedFullScreenContent: (ad) {},
+              // Called when an impression occurs on the ad.
+              onAdImpression: (ad) {},
+              // Called when the ad failed to show full screen content.
+              onAdFailedToShowFullScreenContent: (ad, err) {
+                // Dispose the ad here to free resources.
+                ad.dispose();
+              },
+              // Called when the ad dismissed full screen content.
+              onAdDismissedFullScreenContent: (ad) {
+                // Dispose the ad here to free resources.
+                ad.dispose();
+              },
+              // Called when a click is recorded for an ad.
+              onAdClicked: (ad) {});
+
+          debugPrint("[app] $ad loaded.");
+          adLoaded = true;
+          interstitialAd = ad;
+        }, onAdFailedToLoad: (LoadAdError error) {
+          debugPrint("[app] InterstitialAd failed to load: $error");
+        }));
   }
 
 }
