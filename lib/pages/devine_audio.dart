@@ -24,13 +24,15 @@ class DevineAudio extends StatelessWidget {
       provider.initialize();
     }
 
-    if (provider.attempts % 8 == 0) {
+    if (provider.attempts % 8 == 0 && !provider.skipAfterParameters) {
       if (provider.interstitialAd != null) {
         provider.interstitialAd?.show();
         provider.adLoaded = false;
       }
       provider.loadAd();
     }
+
+    provider.skipAfterParameters = false;
 
     return ListView(
       children: [
@@ -136,6 +138,7 @@ class ProviderDevineAudio with ChangeNotifier {
 
   double volume = 1.0;
   double speedRate = 0.5;
+  bool skipAfterParameters = false;
 
   int min = nombreMin.round();
   int max = 99;
@@ -187,15 +190,17 @@ class ProviderDevineAudio with ChangeNotifier {
     notifyListeners();
   }
 
-    void setVolume (double v) async {
+  void setVolume (double v) async {
     volume = v;
     await flutterTts.setVolume(volume);
+    skipAfterParameters = true;
     notifyListeners();
   }
 
   void setSpeechRate (double v) async {
     speedRate = v;
     await flutterTts.setSpeechRate(v);
+    skipAfterParameters = true;
     notifyListeners();
   }
 
