@@ -1,7 +1,7 @@
 name: nombres_apprendre_exercices
 description: "Écrire les nombres en français"
 
-version: 1.1.0+19
+version: 1.1.0+20
 
 environment:
   sdk: '>=3.4.1 <4.0.0'
