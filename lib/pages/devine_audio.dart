@@ -54,6 +54,20 @@ class DevineAudio extends StatelessWidget {
 
   Widget _getAudioPlayer (ProviderDevineAudio provider) {
 
+    if (!provider.frAvailable) {
+      return const Center(child: Padding(padding: paddingMarginGeneral, child: 
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("La langue française n'est pas disponible sur cet appareil.", style: textStyleGras,),
+            Text("Impossible de lancer la synthèse vocale en français.", style: textStyleGras,)
+          ],
+        )
+      
+      ),);
+    }
+
     return Padding(padding: paddingMarginGeneral, child: ContainerTitre(title: "Deviner", childWidget:
       Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -146,20 +160,36 @@ class ProviderDevineAudio with ChangeNotifier {
   FlutterTts flutterTts = FlutterTts();
 
   bool initialized = false;
+  bool frAvailable = false;
+
   TextEditingController controller = TextEditingController();
   TextEditingController controllerMin = TextEditingController(text: nombreMin.round().toString());
   TextEditingController controllerMax = TextEditingController(text: "99");
   RichText labelAnswer = RichText(text: TextSpan(text: ""));
 
   void initialize () async {
-    await flutterTts.setLanguage("fr-FR");
     await flutterTts.setSpeechRate(speedRate);
     await flutterTts.setVolume(volume);
     await flutterTts.setPitch(1.0);
 
+    // Checking languages
+    final availableLanguages = List<String>.from(await flutterTts.getLanguages);
+    List<String> listFrench = availableLanguages.where((element) => element.contains("fr") && element.contains("FR")).toList();
+
+    if (listFrench.isEmpty) {
+      debugPrintStack(label: "[app] French language is not available on this device.");
+      frAvailable = false;
+    }
+
+    else {
+      await flutterTts.setLanguage(listFrench.first);
+      frAvailable = true;
+    }
+
     regenerate();
 
     initialized = true;
+    notifyListeners();
   }
 
   void playSound () async {
